@@ -18,18 +18,19 @@
         android:textColor="@color/white"
         android:textSize="50sp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:background="@drawable/full_rounded_corners"
-            android:drawableEnd="@drawable/ic_baseline_search_24"
-            android:hint="@string/home_page_input_hint" />
-    </com.google.android.material.textfield.TextInputLayout>
+    <EditText
+        android:id="@+id/editTextTextPersonName2"
+        android:layout_width="355dp"
+        android:layout_height="66dp"
+        android:layout_gravity="center"
+        android:autofillHints=""
+        android:background="@drawable/full_rounded_corners"
+        android:drawableEnd="@drawable/ic_baseline_search_24"
+        android:ems="10"
+        android:hint="@string/searsh"
+        android:inputType="textPersonName"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
 
 </FrameLayout>

@@ -4,15 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".FavoriteFragment"
-    android:background="@color/design_default_color_primary">
+    android:background="@drawable/backround_degree">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Favorite Fragment"
-        android:textSize="26dp"
-        android:layout_gravity="center"
-        android:textColor="@color/white"/>
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="10dp"
+        android:text="@string/favorites"
+        android:textColor="@color/white"
+        android:textSize="34sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/favoriteRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="649dp"
+        android:layout_marginTop="60dp"
+        tools:listitem="@layout/favorite_recycler_view_item" />
 
 </FrameLayout>
