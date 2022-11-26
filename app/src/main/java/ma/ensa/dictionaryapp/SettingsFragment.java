@@ -1,5 +1,6 @@
 package ma.ensa.dictionaryapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -74,8 +75,8 @@ public class SettingsFragment extends Fragment {
         aboutButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                Toast.makeText(view.getContext(), "Word Not Found", Toast.LENGTH_LONG).show();
-
+                Intent intent = new Intent(view.getContext(), AboutActivity.class);
+                startActivity(intent);
             }
         });
         clearFavButton.setOnClickListener(new View.OnClickListener() {
