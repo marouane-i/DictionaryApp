@@ -33,11 +33,11 @@
             android:textColor="@color/orange"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2"
+            app:layout_constraintTop_toBottomOf="@+id/searchWord"
             tools:ignore="TextContrastCheck" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName2"
+            android:id="@+id/searchWord"
             android:layout_width="355dp"
             android:layout_height="66dp"
             android:layout_gravity="center"
