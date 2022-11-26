@@ -4,10 +4,17 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hello_home_page">Welcome to Ensa Dictionnary</string>
     <string name="home_page_input_hint">Search</string>
-    <string name="setting">Settings Fragment</string>
+    <string name="setting">Settings</string>
     <string name="itemWord">Conduire</string>
     <string name="todo">TODO</string>
     <string name="wordType">Noun</string>
     <string name="favorites">Favorites</string>
-    <string name="searsh">Start Searshing</string>
+    <string name="searsh">Start Searching</string>
+    <string name="searchButton">Search</string>
+    <string name="clean_histo">Clean History</string>
+    <string name="about">About</string>
+    <string name="clean_favor">Clean Favorite</string>
+    <string name="choix_de_la">Choix de langue</string>
+    <string name="CleanFavoriteSettings">Clean Favorite</string>
+    <string name="AboutSetting">About</string>
 </resources>

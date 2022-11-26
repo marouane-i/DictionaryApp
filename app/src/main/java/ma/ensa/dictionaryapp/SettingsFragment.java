@@ -2,11 +2,15 @@ package ma.ensa.dictionaryapp;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,5 +64,26 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_settings, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Button aboutButton = (Button) view.findViewById(R.id.settingsButton2);
+        Button clearFavButton = (Button) view.findViewById(R.id.settingButton3);
+        aboutButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                Toast.makeText(view.getContext(), "Word Not Found", Toast.LENGTH_LONG).show();
+
+            }
+        });
+        clearFavButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                Toast.makeText(view.getContext(), "Favorite Cleared", Toast.LENGTH_LONG).show();
+
+            }
+        });
     }
 }
