@@ -7,6 +7,15 @@ public class Word implements Serializable {
     private String id;
     private String audioFile;
     private List<Definition> definitions;
+    private Boolean isFavorite=false;
+
+    public Boolean getFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(Boolean favorite) {
+        isFavorite = favorite;
+    }
 
     public Word() {
     }
