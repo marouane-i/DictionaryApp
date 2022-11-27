@@ -3,6 +3,8 @@ package ma.ensa.dictionaryapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -36,6 +38,13 @@ public class DefinitionActivity extends AppCompatActivity {
     private Word word;
     private ArrayList<Word> favoriteList;
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
     @SuppressLint({"MissingInflatedId", "ResourceAsColor"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +59,6 @@ public class DefinitionActivity extends AppCompatActivity {
                 +word.getId()+" "+word.getDefinitions().get(0).getType()
                 +" from the Oxford Advanced Learner's Dictionary";
 
-        System.out.println(word);
         id = findViewById(R.id.nameId);
         type = findViewById(R.id.nameType);
         description = findViewById(R.id.nameDefinition1);
@@ -70,12 +78,15 @@ public class DefinitionActivity extends AppCompatActivity {
                     .get(0).getExample());
         }
         updesc.setText(updesString);
+        if(word.getFavorite()){
+            fav.setImageResource(R.drawable.ic_baseline_favorite_true_24);
+        }
         loadData();
     }
     private void loadData() {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("shared_preferences", MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("courses", null);
+        String json = sharedPreferences.getString("words", null);
         Type type = new TypeToken<ArrayList<Word>>() {}.getType();
         favoriteList = gson.fromJson(json, type);
         if (favoriteList == null) {
@@ -83,20 +94,26 @@ public class DefinitionActivity extends AppCompatActivity {
         }
     }
     private void saveData() {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("shared_preferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(favoriteList);
         editor.putString("words", json);
         editor.apply();
         loadData();
-        Toast.makeText(this, "This word is saved in favorite ", Toast.LENGTH_SHORT).show();
     }
     public void doFavorite(View view){
-        System.out.println("clicked");
-        fav.setImageResource(R.drawable.ic_baseline_favorite_true_24);
-        word.setFavorite(true);
-        favoriteList.add(word);
-        saveData();
+        if(!word.getFavorite()){
+            fav.setImageResource(R.drawable.ic_baseline_favorite_true_24);
+            word.setFavorite(true);
+            favoriteList.add(word);
+            saveData();
+            Toast.makeText(this, "This word is saved in favorite ", Toast.LENGTH_SHORT).show();
+        }else{
+            fav.setImageResource(R.drawable.ic_baseline_favorite_false_24);
+            favoriteList.remove(word);
+            saveData();
+            Toast.makeText(this, "This word is removed from favorite ", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -13,27 +13,42 @@ import java.util.ArrayList;
 
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.myViewHolder> {
     private ArrayList<FavoriteModel> list;
+    private final FavoriteRecyclerViewInterface favoriteRecyclerViewInterface;
 
-    public FavoriteAdapter(ArrayList<FavoriteModel> list) {
+    public FavoriteAdapter(ArrayList<FavoriteModel> list,FavoriteRecyclerViewInterface favoriteRecyclerViewInterface) {
         this.list = list;
+        this.favoriteRecyclerViewInterface =favoriteRecyclerViewInterface;
     }
 
-    class myViewHolder extends RecyclerView.ViewHolder{
+    public static class myViewHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
         TextView word,wordType;
-        public myViewHolder(@NonNull View itemView) {
+
+        public myViewHolder(@NonNull View itemView,FavoriteRecyclerViewInterface favoriteRecyclerViewInterface) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageViewItem);
             word = itemView.findViewById(R.id.textViewItem1);
             wordType = itemView.findViewById(R.id.textViewItem2);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(favoriteRecyclerViewInterface!=null){
+                        int pos = getAdapterPosition();
+                        if(pos != RecyclerView.NO_POSITION){
+                            favoriteRecyclerViewInterface.onItemClick(pos);
+                        }
+                    }
+                }
+            });
         }
+
     }
     @NonNull
     @Override
     public FavoriteAdapter.myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.favorite_recycler_view_item,parent,false);
-        return new myViewHolder(view);
+        return new myViewHolder(view,favoriteRecyclerViewInterface);
     }
 
     @Override
@@ -45,6 +60,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.myView
 
     @Override
     public int getItemCount() {
-        return list.size();
+
+        return (list!=null)? list.size():0;
     }
 }

@@ -18,6 +18,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.net.NoRouteToHostException;
 
 import ma.ensa.dictionaryapp.databinding.ActivityMainBinding;
+import ma.ensa.dictionaryapp.model.Word;
 
 public class MainActivity extends AppCompatActivity{
     ActivityMainBinding binding;

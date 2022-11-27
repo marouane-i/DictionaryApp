@@ -1,6 +1,8 @@
 package ma.ensa.dictionaryapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import ma.ensa.dictionaryapp.model.Word;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,9 +91,19 @@ public class SettingsFragment extends Fragment {
         clearFavButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
+                clearData();
                 Toast.makeText(view.getContext(), "Favorite Cleared", Toast.LENGTH_LONG).show();
 
             }
         });
+    }
+    private void clearData() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("shared_preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        List<Word> empty_list = new ArrayList<>();
+        String json = gson.toJson(empty_list);
+        editor.putString("words", json);
+        editor.apply();
     }
 }
