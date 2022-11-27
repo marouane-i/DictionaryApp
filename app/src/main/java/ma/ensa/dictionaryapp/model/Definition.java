@@ -1,8 +1,9 @@
 package ma.ensa.dictionaryapp.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Definition {
+public class Definition implements Serializable {
     private Long id;
     private String definition;
     private String type;

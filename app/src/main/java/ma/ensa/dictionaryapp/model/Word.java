@@ -1,8 +1,9 @@
 package ma.ensa.dictionaryapp.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Word {
+public class Word implements Serializable {
     private String id;
     private String audioFile;
     private List<Definition> definitions;

@@ -1,5 +1,6 @@
 package ma.ensa.dictionaryapp;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -7,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,9 +113,7 @@ public class HomeFragment extends Fragment {
     public void onResponse(String result){
         try {
             Word word = new Word();
-            System.out.println("result is:  "+result);
             JSONObject root = new JSONObject(result);
-
             JSONArray results = root
                     .getJSONArray("results");
             String id = root.getString("id");
@@ -128,8 +128,6 @@ public class HomeFragment extends Fragment {
             List<Definition> definitions = new ArrayList<>();
 
             for(int i=0; i<results.length(); i++){
-                System.out.println("i is: "+i);
-
                 JSONObject senses = results.getJSONObject(i)
                         .getJSONArray("lexicalEntries")
                         .getJSONObject(0)
@@ -167,15 +165,14 @@ public class HomeFragment extends Fragment {
             word.setId(id);
             word.setAudioFile(audioFile);
             word.setDefinitions(definitions);
-            System.out.println(word);
+            Intent intent = new Intent(getContext(), DefinitionActivity.class);
+            intent.putExtra("word", word);
+            startActivity(intent);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-    private void sendToast(){
 
-        Toast.makeText(getActivity().getBaseContext(), "Favorite Cleared", Toast.LENGTH_LONG).show();
-    }
     private class CallbackTask extends AsyncTask<String, Integer, String> {
 
         @Override
@@ -188,7 +185,6 @@ public class HomeFragment extends Fragment {
                 urlConnection.setRequestProperty("Accept","application/json");
                 urlConnection.setRequestProperty("app_id",app_id);
                 urlConnection.setRequestProperty("app_key",app_key);
-
                 BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                 StringBuilder stringBuilder = new StringBuilder();
                 String line = null;
@@ -197,7 +193,8 @@ public class HomeFragment extends Fragment {
                 }
                 return stringBuilder.toString();
             }catch (Exception e){
-                sendToast();
+                Handler handler = new Handler(getActivity().getMainLooper());
+                handler.post(()->Toast.makeText(getActivity().getBaseContext(), "invalid word", Toast.LENGTH_LONG).show());
                 e.printStackTrace();
                 return e.toString();
             }

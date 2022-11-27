@@ -1,6 +1,8 @@
 package ma.ensa.dictionaryapp.model;
 
-public class Example {
+import java.io.Serializable;
+
+public class Example implements Serializable {
     private Long id;
     private String example;
 
