@@ -23,6 +23,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import ma.ensa.dictionaryapp.model.Example;
 import ma.ensa.dictionaryapp.model.Word;
 
 public class DefinitionActivity extends AppCompatActivity {
@@ -61,9 +62,12 @@ public class DefinitionActivity extends AppCompatActivity {
         type.setText(word.getDefinitions().get(0).getType());
         description.setText(word.getDefinitions().get(0).getDefinition());
         if(word.getDefinitions().get(0).getExamples() == null){
-            findViewById(R.id.exampleeTitle).setActivated(false);
+            findViewById(R.id.exampleeTitle).setVisibility(View.GONE);
+            example.setVisibility(View.GONE);
         }else{
-            example.setText(word.getDefinitions().get(0).getExamples().get(0).getExample());
+            example.setText(word.getDefinitions()
+                    .get(0).getExamples()
+                    .get(0).getExample());
         }
         updesc.setText(updesString);
         loadData();
