@@ -2,6 +2,7 @@ package ma.ensa.dictionaryapp.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 public class Word implements Serializable {
     private String id;
@@ -11,6 +12,14 @@ public class Word implements Serializable {
 
     public Boolean getFavorite() {
         return isFavorite;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Word word = (Word) o;
+        return Objects.equals(id, word.id);
     }
 
     public void setFavorite(Boolean favorite) {

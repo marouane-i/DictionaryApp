@@ -1,5 +1,9 @@
 package ma.ensa.dictionaryapp;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,15 +16,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+import ma.ensa.dictionaryapp.model.Word;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FavoriteFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FavoriteFragment extends Fragment {
+public class FavoriteFragment extends Fragment  implements FavoriteRecyclerViewInterface{
     private RecyclerView recyclerView;
+    ArrayList<Word> worldList;
+    ArrayList<FavoriteModel> favList=new ArrayList<>();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,46 +78,37 @@ public class FavoriteFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
+    private void loadData() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("shared_preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("words", null);
+        Type type = new TypeToken<ArrayList<Word>>() {}.getType();
+        worldList = gson.fromJson(json, type);
+        if (worldList == null) {
+            worldList = new ArrayList<>();
+        }
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.favoriteRecyclerView);
         LinearLayoutManager lmg = new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(lmg);
-        ArrayList<FavoriteModel> list = new ArrayList<>();{
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
-            list.add(new FavoriteModel(R.drawable.ic_baseline_star_24_white,"car","noun"));
+        loadData();
+        for(Word item:worldList){
+            favList.add(new FavoriteModel(0,item.getId(),item.getDefinitions().get(0).getType()));
         }
-        FavoriteAdapter favoriteAdapter = new FavoriteAdapter(list);
+        FavoriteAdapter favoriteAdapter = new FavoriteAdapter(favList,this);
         recyclerView.setAdapter(favoriteAdapter);
+    }
+    public void getMore(View view){
+
+    }
+
+    @Override
+    public void onItemClick(int positions) {
+        Intent intent = new Intent(getContext(), DefinitionActivity.class);
+        intent.putExtra("word", worldList.get(positions));
+        startActivity(intent);
     }
 }

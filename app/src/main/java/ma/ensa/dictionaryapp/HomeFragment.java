@@ -1,6 +1,9 @@
 package ma.ensa.dictionaryapp;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -16,15 +19,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -41,6 +50,7 @@ public class HomeFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private List<Word> worldList;
 
     private String mParam1;
     private String mParam2;
@@ -78,6 +88,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        loadData();
         loadingDialog = new LoadingDialog(getActivity());
         Button button = (Button) view.findViewById(R.id.buttonSearch);
         button.setOnClickListener(new View.OnClickListener() {
@@ -87,9 +98,21 @@ public class HomeFragment extends Fragment {
                 if(searchWord.isEmpty())
                     Toast.makeText(v.getContext(), "Enter a word please", Toast.LENGTH_LONG).show();
                 else{
-                    loadingDialog.startLoadingDialog();
-                    CallbackTask task = new CallbackTask();
-                    task.execute(dictionaryEntries(searchWord));
+                    Word foundWord = null;
+                    for(Word item:worldList){
+                        if(item.getId().equals(searchWord)){
+                            foundWord=item;
+                        }
+                    }
+                    if(foundWord!=null){
+                        Intent intent = new Intent(getContext(), DefinitionActivity.class);
+                        intent.putExtra("word", foundWord);
+                        startActivity(intent);
+                    }else {
+                        loadingDialog.startLoadingDialog();
+                        CallbackTask task = new CallbackTask();
+                        task.execute(dictionaryEntries(searchWord));
+                    }
                 }
 
             }
@@ -162,6 +185,17 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void loadData() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("shared_preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("words", null);
+        Type type = new TypeToken<ArrayList<Word>>() {}.getType();
+        worldList = gson.fromJson(json, type);
+        if (worldList == null) {
+            worldList = new ArrayList<>();
         }
     }
 
