@@ -104,4 +104,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/exampleeTitle" />
 
+    <ImageView
+        android:id="@+id/imageViewFav"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_favorite_false_24"
+        android:onClick="doFavorite"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
