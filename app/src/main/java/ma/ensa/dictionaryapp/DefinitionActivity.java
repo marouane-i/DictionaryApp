@@ -8,6 +8,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.media.AudioAttributes;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -91,6 +94,35 @@ public class DefinitionActivity extends AppCompatActivity {
         editor.apply();
         loadData();
         Toast.makeText(this, "This word is saved in favorite ", Toast.LENGTH_SHORT).show();
+    }
+    public void playAudio(View v){
+        System.out.println("playin audio" + word.getAudioFile());
+        String url = word.getAudioFile();
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioAttributes(
+                new AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .build()
+        );
+        View play_image = findViewById(R.id.play_image);
+        try {
+            mediaPlayer.setDataSource(url);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+            play_image.setActivated(false);
+            play_image.setAlpha(0.5f);
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    findViewById(R.id.play_image).setAlpha(1);
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+
     }
     public void doFavorite(View view){
         System.out.println("clicked");

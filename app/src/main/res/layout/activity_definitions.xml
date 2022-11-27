@@ -115,4 +115,14 @@
         app:srcCompat="@drawable/ic_baseline_favorite_false_24"
         android:onClick="doFavorite"/>
 
+    <ImageView
+        android:id="@+id/play_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="@+id/textView2"
+        android:onClick="playAudio"
+        app:srcCompat="@drawable/ic_audio" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
