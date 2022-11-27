@@ -39,28 +39,18 @@ import ma.ensa.dictionaryapp.model.Example;
  */
 public class HomeFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
+    private LoadingDialog loadingDialog;
+
     public HomeFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -88,6 +78,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        loadingDialog = new LoadingDialog(getActivity());
         Button button = (Button) view.findViewById(R.id.buttonSearch);
         button.setOnClickListener(new View.OnClickListener() {
         EditText editText = view.findViewById(R.id.searchWord);
@@ -96,6 +87,7 @@ public class HomeFragment extends Fragment {
                 if(searchWord.isEmpty())
                     Toast.makeText(v.getContext(), "Enter a word please", Toast.LENGTH_LONG).show();
                 else{
+                    loadingDialog.startLoadingDialog();
                     CallbackTask task = new CallbackTask();
                     task.execute(dictionaryEntries(searchWord));
                 }
@@ -197,6 +189,8 @@ public class HomeFragment extends Fragment {
                 handler.post(()->Toast.makeText(getActivity().getBaseContext(), "invalid word", Toast.LENGTH_LONG).show());
                 e.printStackTrace();
                 return e.toString();
+            }finally {
+                loadingDialog.dismissDialog();
             }
         }
 
